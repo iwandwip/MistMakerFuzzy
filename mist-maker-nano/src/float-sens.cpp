@@ -90,6 +90,9 @@ void FloatSensor::getSensorValue(int* value) {
         *value = *floatValue;
 }
 
+void FloatSensor::getSensorValue(char* value) {
+}
+
 void FloatSensor::setCallBack(void (*callbackFunc)(void)) {
         thisCallbackFunc = callbackFunc;
 }

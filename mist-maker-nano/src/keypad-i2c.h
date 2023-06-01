@@ -1,24 +1,28 @@
 /*
- *  float-sens.h
+ *  keypad-i2c.h
  *
- *  float sensor lib
+ *  keypad i2c lib
  *  Created on: 2023. 4. 3
  */
 
 #pragma once
 
-#ifndef FLOAT_SENS_H
-#define FLOAT_SENS_H
+#ifndef KEYPADI2C_H
+#define KEYPADI2C_H
 
 #include "Arduino.h"
+#include "Keypad.h"
+#include "Keypad_I2C.h"
+#include "Wire.h"
 #include "sensor-module.h"
 #include "stdint.h"
 
-class FloatSensor : public BaseSens {
+class KeypadI2C : public BaseSens {
        private:
         void (*thisCallbackFunc)(void) = nullptr;
+        Keypad_I2C* keypadClass;
         uint8_t sensorPin;
-        int* floatValue;
+        char* keyValue;
 
         uint32_t update_tm;
         uint32_t debug_tm;
@@ -30,9 +34,9 @@ class FloatSensor : public BaseSens {
         float lowPassFilter(float input, float output, float alpha);
 
        public:
-        FloatSensor();
-        FloatSensor(uint8_t __pin, bool enableCalibrate = false);
-        ~FloatSensor();
+        KeypadI2C();
+        KeypadI2C(uint8_t __pin, bool enableCalibrate = false);
+        ~KeypadI2C();
 
         void init() override;
         void update() override;
@@ -49,4 +53,4 @@ class FloatSensor : public BaseSens {
         void setPins(uint8_t __pin);
 };
 
-#endif  // FLOAT_SENS_H
+#endif  // KEYPAD_I2C_H

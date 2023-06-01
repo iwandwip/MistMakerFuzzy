@@ -31,7 +31,6 @@ MAX31865_PT100::MAX31865_PT100(uint8_t _cs_pin, uint8_t _di_pin, uint8_t _do_pin
 }
 
 MAX31865_PT100::~MAX31865_PT100() {
-        delete this;
 }
 
 void MAX31865_PT100::init() {
@@ -42,7 +41,7 @@ void MAX31865_PT100::init() {
 void MAX31865_PT100::update() {
         if (millis() - update_tm >= 500) {
                 if (!isCalibrate) {
-                        uint16_t rtd = sensorClass->readRTD();
+                        // uint16_t rtd = sensorClass->readRTD();
                         *temperature = (float)sensorClass->temperature(RNOMINAL, RREF);
                         *temperature = *temperature + (*temperature * SENSOR_FILTER_KF);
                         *temperature /= SENSOR_FILTER_KF + 1;
@@ -93,6 +92,9 @@ void MAX31865_PT100::getSensorValue(float* value) {
 }
 
 void MAX31865_PT100::getSensorValue(int* value) {
+}
+
+void MAX31865_PT100::getSensorValue(char* value) {
 }
 
 void MAX31865_PT100::setCallBack(void (*callbackFunc)(void)) {
