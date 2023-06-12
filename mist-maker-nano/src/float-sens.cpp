@@ -13,7 +13,7 @@
 #define SENSOR_FILTER_KF 8
 
 FloatSensor::FloatSensor()
-    : sensorPin(A0) {
+  : sensorPin(A0) {
         isCalibrate = false;
         floatValue = (isCalibrate) ? new int[SENS_RET_TOTAL_DATA] : new int;
         if (isCalibrate) cal_tm = new uint32_t;
@@ -36,7 +36,11 @@ void FloatSensor::init() {
 void FloatSensor::update() {
         if (millis() - update_tm >= 50) {
                 if (!isCalibrate) {
-                        *floatValue = digitalRead(sensorPin);
+                        if (sensorPin < 14) {
+                                *floatValue = !digitalRead(sensorPin);
+                        } else {
+                                *floatValue = !(analogRead(sensorPin) > 512) ? 1 : 0;
+                        }
 
                         // *floatValue = *floatValue * (5.0 / 1023.0);
                         // *floatValue = *floatValue + (*floatValue * SENSOR_FILTER_KF);
