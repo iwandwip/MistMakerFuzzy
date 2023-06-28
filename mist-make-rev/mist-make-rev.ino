@@ -4,16 +4,34 @@
 #include "serial-com.h"
 #include "MemoryFree.h"
 #include "float-sensor.h"
+#include "fuzzy-header.h"
 #include "sensor-module.h"
 #include "timer-arduino.h"
 #include "max31865-sensor.h"
 #include "LiquidCrystal_I2C.h"
 
+#define PWM_OUT_PIN 9
+#define DRIVER_ENA_PIN 8
+#define DRIVER_IN1_PIN 7
+#define DRIVER_IN2_PIN 6
+#define DRIVER_IN3_PIN 5
+#define DRIVER_IN4_PIN 4
+#define DRIVER_ENB_PIN 3
+
+#define LED_RED_PIN A0
+#define LED_YELLOW_PIN A1
+#define LED_GREEN_PIN A2
+#define LED_BLUE_PIN A3
+#define BUZZER_PIN A4
+
+#define MIST_PUSH_BUTTON A0
+#define MIST_LATCH_BUTTON A0
+
 LiquidCrystal_I2C lcd(0x27, 20, 4);
 SensorModule sensor;
 TimerArduino timer;
 
-const float temperatureSetpoint = 100;
+const float temperatureSetpoint = 100.0;
 int floatUpValue, floatDownValue;
 float temperatureValue;
 char keypadValue;
@@ -29,6 +47,12 @@ char lowerDisplayBuffer[25];
 char bufferSetTime[5] = "0";
 uint8_t bufferSetTimeIndex = 0;
 
+const int fis_gcI = 1;
+const int fis_gcO = 1;
+const int fis_gcR = 3;
+
+float g_fisInput[fis_gcI];
+float g_fisOutput[fis_gcO];
 
 void setup() {
         Serial.begin(9600);
@@ -82,6 +106,10 @@ void loop() {
                 sprintf(upperDisplayBuffer, "  Elapsed %02d:%02d:%02d  ", timer.getHours(), timer.getMinutes(), timer.getSeconds());
                 sprintf(upperMidDisplayBuffer, "  SV: %6s *C  ", strTemperatureSetpoint);
                 sprintf(lowerMidDisplayBuffer, "  PV: %6s *C  ", strPVTemperature);
+
+                g_fisInput[0] = temperatureValue;
+                g_fisOutput[0] = 0;
+                fis_evaluate();
 
                 if (timer.isExpired()) {
                         taskSequence = 5;
