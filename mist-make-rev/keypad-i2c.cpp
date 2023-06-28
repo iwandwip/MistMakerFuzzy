@@ -11,15 +11,15 @@
 #include "sensor-filter.h"
 
 #define SENSOR_FILTER_KF 8
-#define I2CADDR 0x21
+#define I2CADDR 0x38
 
 const byte ROWS = 4;
 const byte COLS = 4;
 char hexaKeys[ROWS][COLS] = {
-        { '0', '1', '2', '3' },
-        { '4', '5', '6', '7' },
-        { '8', '9', 'A', 'B' },
-        { 'C', 'D', 'E', 'F' }
+        { '1', '2', '3', 'A' },
+        { '4', '5', '6', 'B' },
+        { '7', '8', '9', 'C' },
+        { '*', '0', '#', 'D' }
 };
 byte rowPins[ROWS] = { 3, 2, 1, 0 };
 byte colPins[COLS] = { 7, 6, 5, 4 };
@@ -44,7 +44,7 @@ void KeypadI2C::init() {
 }
 
 void KeypadI2C::update() {
-        if (millis() - sensTimer[0] >= 30) {
+        if (millis() - sensTimer[0] >= 50) {
                 if (!isCalibrate) {
                         keypadValue = sensorClass->getKey();
                 } else {

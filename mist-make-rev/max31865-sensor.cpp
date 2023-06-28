@@ -35,7 +35,7 @@ void Max31865Pt100::init() {
 }
 
 void Max31865Pt100::update() {
-        if (millis() - sensTimer[0] >= 50) {
+        if (millis() - sensTimer[0] >= 500) {
                 if (!isCalibrate) {
                         // uint16_t rtd = sensorClass->readRTD();
                         temperatureValue = (float)sensorClass->temperature(RNOMINAL, RREF);
