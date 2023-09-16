@@ -18,10 +18,10 @@
 #define DRIVER_IN4_PIN 4
 #define DRIVER_ENB_PIN 3
 
-#define LED_RED_PIN A0
-#define LED_YELLOW_PIN A1
-#define LED_GREEN_PIN A2
-#define LED_BLUE_PIN A3
+#define LED_BLUE_PIN A0    // kipas nyala
+#define LED_RED_PIN A1     // sistem off
+#define LED_YELLOW_PIN A2  // low level
+#define LED_GREEN_PIN A3   // ssr hidup parallel
 #define BUZZER_PIN A4
 
 #define MIST_PUSH_BUTTON A0
